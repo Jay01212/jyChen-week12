@@ -84,7 +84,6 @@ const validateConfirmPassword = (blur) => {
 </script>
 
 <template>
-  <!-- 🗄️ W3. Library Registration Form -->
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8 offset-md-2">
