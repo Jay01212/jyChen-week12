@@ -1,5 +1,5 @@
 import { ref } from "vue";
-
+import router from '../router/index';
 const isAuthentication = ref(false);
 
 export function useAuthentication() {
