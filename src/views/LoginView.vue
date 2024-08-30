@@ -1,10 +1,11 @@
 <script setup>
 import { ref } from 'vue'
-import router from '../router';
+import router from '../router/index';
+import { useAuthentication } from '../router/authentication'
 
-const hardcodeUsername = 'user'
+const hardcodeUsername = 'Jay'
 const hardcodePassword = 'Aa12345!'
-
+const { isAuthentication, login } = useAuthentication()
 const formData = ref({
   username: '',
   password: '',
@@ -18,9 +19,12 @@ const submitForm = () => {
   if (!errors.value.username && !errors.value.password 
     && formData.value.username === hardcodeUsername 
     && formData.value.password === hardcodePassword) {
-      alert('login success')
-      router.push({name:'About'})
-    } 
+      alert('Login success')
+      login() // Set isAuthentication to true
+      router.push({ name: 'About' }) // Redirect to About page
+  } else {
+    alert('Incorrect username or password')
+  }
 }
 
 const errors = ref({
