@@ -11,12 +11,6 @@ import Aura from '@primevue/themes/aura'
 // import DataTable from 'primevue/datatable'
 // import Column from 'primevue/Column'
 
-const app = createApp(App)
-app.use(PrimeVue, { theme: { preset: Aura } })
-app.use(router)
-// app.component('DataTable', DataTable)
-// app.component('Column', Column)
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -34,5 +28,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
+
+const app = createApp(App)
+app.use(PrimeVue, { theme: { preset: Aura } })
+app.use(router)
+// app.component('DataTable', DataTable)
+// app.component('Column', Column)
 
 app.mount('#app')
