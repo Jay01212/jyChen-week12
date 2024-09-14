@@ -6,11 +6,13 @@
         <form @submit.prevent="register" class="narrow-form">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control bg-white" id="email" v-model="email" required placeholder="Enter your email">
+            <input type="email" class="form-control bg-white" id="email" v-model="email" required
+              placeholder="Enter your email">
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control bg-white" id="password" v-model="password" required placeholder="Enter your password">
+            <input type="password" class="form-control bg-white" id="password" v-model="password" required
+              placeholder="Enter your password">
           </div>
           <div class="d-flex justify-content-center gap-2">
             <button type="submit" class="btn btn-primary" @click="register">Save to Firebase</button>
@@ -36,9 +38,11 @@ const register = () => {
   createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
       console.log("Firebase Register Successful!");
+      alert("Registration successful!")
       router.push("/FireLogin");
     }).catch((error) => {
-      console.log(error.code);
+      console.log(error.code)
+      alert("Registration failed!")
     });
 };
 
@@ -59,12 +63,22 @@ const clearForm = () => {
 }
 
 .btn-primary {
-  background-color: #4285f4;
+  background-color: #275fda;
   border-color: #4285f4;
+}
+
+.btn-primary:hover {
+  background-color: #1c4cb3;
+  border-color: #1c4cb3;
 }
 
 .btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
 }
 </style>

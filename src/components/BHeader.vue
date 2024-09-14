@@ -1,7 +1,17 @@
 <script setup>
-import { useAuthentication } from '../router/authentication'
+// import { useAuthentication } from '../router/authentication'
+// const { isAuthentication, logout } = useAuthentication()
 
-const { isAuthentication, logout } = useAuthentication()
+import { getAuth, signOut } from "firebase/auth";
+
+const auth = getAuth();
+signOut(auth).then(() => {
+  // Sign-out successful.
+  alert("Logout successful!")
+}).catch((error) => {
+  // An error happened.
+  console.log("logout error",error)
+});
 </script>
 
 <template>
@@ -11,9 +21,7 @@ const { isAuthentication, logout } = useAuthentication()
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <router-link to="/" class="nav-link" active-class="active" aria-current="page"
-            >Home (Week 5)</router-link
-          >
+          <router-link to="/" class="nav-link" active-class="active" aria-current="page">Home (Week 5)</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/about" class="nav-link" active-class="active">About</router-link>
@@ -29,6 +37,10 @@ const { isAuthentication, logout } = useAuthentication()
 
         <li class="nav-item">
           <router-link to="/FireRegister" class="nav-link" active-class="active">Firebase Register</router-link>
+        </li>
+
+        <li class="nav-item">
+          <button @click="Firelogout" class="nav-link btn btn-link">Firebase Logout</button>
         </li>
 
         <li class="nav-item" v-if="isAuthentication">
