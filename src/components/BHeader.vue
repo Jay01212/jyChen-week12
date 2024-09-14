@@ -5,13 +5,15 @@
 import { getAuth, signOut } from "firebase/auth";
 
 const auth = getAuth();
-signOut(auth).then(() => {
-  // Sign-out successful.
-  alert("Logout successful!")
-}).catch((error) => {
-  // An error happened.
-  console.log("logout error",error)
-});
+const Firebaselogout = () => {
+  signOut(auth).then(() => {
+    // Sign-out successful.
+    alert("Logout successful!")
+  }).catch((error) => {
+    // An error happened.
+    console.log("logout error", error)
+  });
+}
 </script>
 
 <template>
@@ -40,7 +42,7 @@ signOut(auth).then(() => {
         </li>
 
         <li class="nav-item">
-          <button @click="Firelogout" class="nav-link btn btn-link">Firebase Logout</button>
+          <button @click="Firebaselogout" class="nav-link btn btn-link">Firebase Logout</button>
         </li>
 
         <li class="nav-item" v-if="isAuthentication">
