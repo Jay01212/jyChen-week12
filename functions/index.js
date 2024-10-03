@@ -8,7 +8,11 @@
  */
 
 const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+const admin = require("firebase-admin");
+const cors = require("cors")({origin: true});
+// const logger = require("firebase-functions/logger");
+
+admin.initializeApp();
 
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
@@ -17,3 +21,22 @@ const logger = require("firebase-functions/logger");
 //   logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+exports.countBooks = onRequest((req, res) => {
+    cors(req, res, async () => {
+        try {
+            // Get a collection of books
+            const bookCollection = admin.firestore().collection("books");
+            // Fix the variable name and get the snapshot correctly
+            const snapshot = await bookCollection.get();
+            const count = snapshot.size;
+
+            // Return the number of books
+            res.status(200).send({count});
+        } catch (error) {
+            // Catch the error and return a 500 response
+            console.error("Error counting books:", error.message);
+            res.status(500).send("Error counting books");
+        }
+    });
+});
