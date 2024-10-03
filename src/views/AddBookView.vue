@@ -8,14 +8,18 @@
                         <label for="isbn" class="form-label">ISBN</label>
                         <input type="text" class="form-control bg-white" id="isbn" v-model="isbn" required
                             placeholder="Enter ISBN number">
+                        <p v-if="isbnError" class="text-danger">{{ isbnError }}</p>
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
+                        <label for="name" class="form-label">Book Name</label>
                         <input type="text" class="form-control bg-white" id="name" v-model="name" required
                             placeholder="Enter book name">
+                        <p v-if="nameError" class="text-danger">{{ nameError }}</p>
                     </div>
+                    <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                    <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
                     <div class="d-flex justify-content-center gap-2">
-                        <button type="submit" class="btn btn-primary">Add Book</button>
+                        <button type="submit" class="btn btn-primary" :disabled="loading">Add Book</button>
                         <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
                     </div>
                 </form>
@@ -26,44 +30,76 @@
 
 <script>
 import { ref } from 'vue';
-import db from '../Firebase/init.js';
-import { collection, addDoc } from 'firebase/firestore';
-
-import BookList from '@/components/BookList.vue';
+import axios from 'axios';
 
 export default {
     setup() {
         const isbn = ref('');
         const name = ref('');
+        const isbnError = ref('');
+        const nameError = ref('');
+        const successMessage = ref('');
+        const errorMessage = ref('');
+        const loading = ref(false);
+
+        const validateForm = () => {
+            isbnError.value = '';
+            nameError.value = '';
+            let valid = true;
+
+            // ISBN validation
+            const isbnNumber = Number(isbn.value);
+            if (isNaN(isbnNumber)) {
+                isbnError.value = 'ISBN must be a valid number';
+                valid = false;
+            }
+
+            // Name validation
+            if (!name.value.trim()) {
+                nameError.value = 'Book name cannot be empty';
+                valid = false;
+            }
+
+            return valid;
+        };
 
         const addBook = async () => {
-            try {
-                const isbnNumber = Number(isbn.value);
-                if (isNaN(isbnNumber)) {
-                    alert('ISBN must be a valid number');
-                    return;
-                }
+            if (!validateForm()) return;
 
-                await addDoc(collection(db, 'books'), {
-                    isbn: isbnNumber,
+            loading.value = true;
+            successMessage.value = '';
+            errorMessage.value = '';
+
+            try {
+                const response = await axios.post('https://addbook-5g3nuumekq-uc.a.run.app', {
+                    isbn: Number(isbn.value),
                     name: name.value
                 });
-                isbn.value = '';
-                name.value = '';
-                alert('Book added successfully!');
+
+                successMessage.value = response.data.message; // Adjust based on your cloud function response
+                clearForm();
             } catch (error) {
-                console.error('Error adding book: ', error);
+                errorMessage.value = 'Error adding book: ' + error.message;
+            } finally {
+                loading.value = false;
             }
         };
 
         const clearForm = () => {
             isbn.value = '';
             name.value = '';
+            isbnError.value = '';
+            nameError.value = '';
         };
 
         return {
             isbn,
             name,
+            isbnError,
+            nameError,
+            successMessage,
+            errorMessage,
+            loading,
             addBook,
             clearForm
         };
@@ -99,5 +135,9 @@ export default {
 .btn-secondary:hover {
     background-color: #5a6268;
     border-color: #5a6268;
+}
+
+.text-danger {
+    color: red;
 }
 </style>
