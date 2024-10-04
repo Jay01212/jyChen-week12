@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Weather Search</h1>
+        <h1 class="text-center mb-4">Weather APP</h1>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="mb-3">
