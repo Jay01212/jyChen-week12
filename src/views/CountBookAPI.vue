@@ -1,6 +1,6 @@
 <template>
     <div id="book-count" class="text-center mt-5">
-        <h1 class="mb-4">Book Count Statistics</h1>
+        <h1 class="mb-4">Book Count API</h1>
 
         <!-- Display JSON data using <pre> tag -->
         <pre v-if="jsonData" class="alert alert-info">{{ jsonData }}</pre>
@@ -8,7 +8,6 @@
         <!-- Display the extracted count -->
         <p v-if="count !== null" class="alert alert-success">Total Book Count: {{ count }}</p>
 
-        <!-- Error message -->
         <p v-if="error" class="alert alert-danger">{{ error }}</p>
     </div>
 </template>

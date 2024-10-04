@@ -4,16 +4,25 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="city" class="form-label">Enter City</label>
                     <input type="text" class="form-control" id="city" v-model="city" placeholder="Enter city name">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button @click="searchByCity" class="btn btn-primary">Search</button>
+                    <button @click="searchByCity" class="btn btn-primary" :disabled="isLoading">Search</button>
                 </div>
             </div>
         </div>
 
-        <!-- Display weather information if API returns data -->
+        <!-- Show loading status -->
+        <div v-if="isLoading" class="text-center mt-4">
+            <p>Loading...</p>
+        </div>
+
+        <!-- Display error messages -->
+        <div v-if="errorMessage" class="text-center mt-4 alert alert-danger">
+            <p>{{ errorMessage }}</p>
+        </div>
+
+        <!-- Display weather information -->
         <main v-if="weatherData" class="mt-5 text-center">
             <h2>{{ weatherData.name }}, {{ weatherData.sys.country }}</h2>
             <div>
@@ -36,14 +45,11 @@ export default {
         return {
             city: "",
             weatherData: null,
-            hourlyForecast: [],
-            dailyForecast: [],
-            isLoading: false,  // To indicate whether data is loading
-            errorMessage: ""   // To display error messages
+            isLoading: false,
+            errorMessage: "",
         };
     },
     computed: {
-        // Request temperature in Celsius directly from the API
         temperature() {
             return this.weatherData ? Math.floor(this.weatherData.main.temp) : null;
         },
@@ -53,44 +59,22 @@ export default {
                 : null;
         },
     },
-    mounted() {
-        this.fetchCurrentLocationWeather();
-    },
     methods: {
-        async fetchCurrentLocationWeather() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        const { latitude, longitude } = position.coords;
-                        const url = this.buildWeatherApiUrl(latitude, longitude);
-                        await this.fetchWeatherData(url);
-                    },
-                    (error) => {
-                        // Error handling when user does not allow location access
-                        this.errorMessage = "Unable to access your location.";
-                        console.error("Geolocation error:", error);
-                    }
-                );
-            } else {
-                this.errorMessage = "Geolocation is not supported by this browser.";
+        async searchByCity() {
+            if (!this.city) {
+                this.errorMessage = "Please enter a city name.";
+                return;
             }
-        },
-        // Build the API request URL
-        buildWeatherApiUrl(lat, lon) {
-            return `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apikey}`;
-        },
-        // Fetch weather data asynchronously
-        async fetchWeatherData(url) {
-            this.isLoading = true;  // Set loading state when request begins
-            this.errorMessage = ""; // Clear any previous error message
-
+            this.isLoading = true;
+            this.errorMessage = "";
+            const url = `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apikey}`;
+            
             try {
                 const response = await axios.get(url);
                 this.weatherData = response.data;
             } catch (error) {
-                // Catch and display request error
                 this.errorMessage = "Error fetching weather data. Please try again.";
-                console.error("Error fetching weather data:", error);
+                console.error("Error:", error);
             } finally {
                 this.isLoading = false;
             }
@@ -98,3 +82,23 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-5 {
+    margin-top: 3rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+</style>
