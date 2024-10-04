@@ -70,3 +70,27 @@ exports.addBook = onRequest((req, res) => {
         }
     });
 });
+
+// Function to get all books
+exports.getAllBooks = onRequest((req, res) => {
+    cors(req, res, async () => {
+        try {
+            // Get a collection of books
+            const bookCollection = admin.firestore().collection("books");
+            const snapshot = await bookCollection.get();
+
+            // Map the snapshot to an array of book objects
+            const books = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            // Return the list of books
+            res.status(200).send(books);
+        } catch (error) {
+            // Catch the error and return a 500 response
+            console.error("Error fetching books:", error.message);
+            res.status(500).send("Error fetching books");
+        }
+    });
+});
