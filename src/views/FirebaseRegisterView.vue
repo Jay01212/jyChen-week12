@@ -1,28 +1,29 @@
 <template>
   <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h1 class="text-center mb-4">W7. Create an Account</h1>
-        <form @submit.prevent="register" class="narrow-form">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control bg-white" id="email" v-model="email" required
-              placeholder="Enter your email">
+      <div class="row justify-content-center">
+          <div class="col-md-6">
+              <h1 class="text-center mb-4">W7. Create an Account</h1>
+              <form @submit.prevent="register" class="narrow-form">
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control bg-white" id="email" v-model="email" required
+                          placeholder="Enter your email">
+                  </div>
+                  <div class="mb-3">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" class="form-control bg-white" id="password" v-model="password" required
+                          placeholder="Enter your password">
+                  </div>
+                  <div class="d-flex justify-content-center gap-2">
+                      <button type="submit" class="btn btn-primary">Save to Firebase</button>
+                      <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
+                  </div>
+              </form>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control bg-white" id="password" v-model="password" required
-              placeholder="Enter your password">
-          </div>
-          <div class="d-flex justify-content-center gap-2">
-            <button type="submit" class="btn btn-primary" @click="register">Save to Firebase</button>
-            <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
-          </div>
-        </form>
       </div>
-    </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref } from "vue";

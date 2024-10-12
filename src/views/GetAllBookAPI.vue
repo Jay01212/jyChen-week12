@@ -19,8 +19,8 @@ const jsonData = ref(null);
 // Fetch all books and display JSON data
 const getAllBooksAPI = async () => {
     try {
-        const response = await axios.get('https://getallbooks-5g3nuumekq-uc.a.run.app'); // 使用你的函数网址
-        jsonData.value = JSON.stringify(response.data, null, 2); // 格式化 JSON 数据
+        const response = await axios.get('https://getallbooks-5g3nuumekq-uc.a.run.app');
+        jsonData.value = JSON.stringify(response.data, null, 2);
         error.value = null;
     } catch (err) {
         console.error('Error fetching all books:', err);
