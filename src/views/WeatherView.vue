@@ -55,7 +55,7 @@ export default {
         },
         iconUrl() {
             return this.weatherData
-                ? `http://openweathermap.org/img/w/${this.weatherData.weather[0].icon}.png`
+                ? `https://openweathermap.org/img/w/${this.weatherData.weather[0].icon}.png`
                 : null;
         },
     },
@@ -67,8 +67,8 @@ export default {
             }
             this.isLoading = true;
             this.errorMessage = "";
-            const url = `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apikey}`;
-            
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apikey}`;
+
             try {
                 const response = await axios.get(url);
                 this.weatherData = response.data;
