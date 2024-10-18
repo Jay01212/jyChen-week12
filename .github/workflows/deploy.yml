@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
+      - master  
 
 jobs:
   build-and-deploy:
@@ -12,26 +12,30 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '20'  
 
     - name: Install dependencies
       run: npm ci
 
     - name: Build
       run: npm run build
+      env:
+        NODE_ENV: production
+
+    - name: Create .nojekyll file
+      run: touch dist/.nojekyll
 
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
         folder: dist
-    
-    - name: Create .nojekyll file
-      run: touch dist/.nojekyll
 
 permissions:
   contents: write
