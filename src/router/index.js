@@ -77,9 +77,11 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
-});
+  history: createWebHistory(process.env.BASE_URL),
+  routes: [
+    // your routes here
+  ]
+})
 
 router.beforeEach((to, from, next) => {
   const { isAuthentication } = useAuthentication();
