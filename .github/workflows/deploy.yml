@@ -29,6 +29,9 @@ jobs:
       with:
         branch: gh-pages
         folder: dist
+    
+    - name: Create .nojekyll file
+      run: touch dist/.nojekyll
 
 permissions:
   contents: write
